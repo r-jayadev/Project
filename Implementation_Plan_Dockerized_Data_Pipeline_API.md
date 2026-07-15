@@ -129,12 +129,17 @@ This becomes the contract used across Pydantic schemas, Pandas cleaning, and the
 - Redis 7 (Docker image `redis:7-alpine`)
 - pytest, pytest-asyncio, httpx (for FastAPI TestClient), pytest-cov
 
-### 0.7 Debugging and error-handling expectations
+### 0.7 Debugging, readability, and error-handling expectations
 - Use the VS Code debugger while developing the API and tests.
 - Create a `.vscode/launch.json` file for debugging the FastAPI app and pytest tests.
 - Add `try/except` blocks wherever input parsing, file handling, database access, Redis access, or external service calls can fail.
 - Catch errors early and return clear messages instead of letting the app crash silently.
 - Use meaningful exception messages for CSV parsing issues, missing columns, invalid data, and database/Redis connection failures.
+- Write simple, beginner-friendly code. Avoid over-engineering or unnecessary abstractions.
+- Keep functions short and focused. Each function should do one clear job.
+- Add comments inside the code to explain what each function does, especially for Pandas cleaning and analytics logic.
+- Prefer readable variable names such as `cleaned_df`, `rows_inserted`, and `cache_key`.
+- Keep the implementation easy to follow for someone learning FastAPI, SQLAlchemy, Pandas, and Docker together.
 
 ---
 
