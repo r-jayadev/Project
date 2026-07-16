@@ -11,40 +11,18 @@ Contains all FastAPI endpoints for:
 
 import pandas as pd
 
-from fastapi import (
-    APIRouter,
-    UploadFile,
-    File,
-    Depends,
-    HTTPException,
-    status
-)
+from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
 
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import Employee
-from app.schemas import (
-    EmployeeResponse,
-    PaginatedEmployees,
-    DepartmentSummary,
-    HiringTrend,
-    HealthResponse
-)
+from app.schemas import EmployeeResponse, PaginatedEmployees, DepartmentSummary, HiringTrend, HealthResponse
 
-from app.data_processing import (
-    validate_columns,
-    clean_data,
-    calculate_department_summary,
-    calculate_hiring_trends
-)
+from app.data_processing import validate_columns, clean_data, calculate_department_summary, calculate_hiring_trends
 
-from app.redis_client import (
-    get_cache,
-    set_cache,
-    delete_cache,
-    check_redis_connection
-)
+
+from app.redis_client import get_cache,set_cache,delete_cache,check_redis_connection
 
 from app.config import settings
 
@@ -52,14 +30,8 @@ from app.config import settings
 router = APIRouter()
 
 
-@router.post(
-    "/data/upload",
-    status_code=status.HTTP_201_CREATED
-)
-def upload_csv(
-    file: UploadFile = File(...),
-    db: Session = Depends(get_db)
-):
+@router.post("/data/upload", status_code=status.HTTP_201_CREATED)
+def upload_csv(file: UploadFile = File(...), db: Session = Depends(get_db)):
     """
     Upload employee CSV file.
 
@@ -75,7 +47,7 @@ def upload_csv(
 
         if not file.filename.endswith(".csv"):
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
+                status_code=400,
                 detail="Only CSV files are allowed."
             )
 
@@ -84,7 +56,7 @@ def upload_csv(
 
         except Exception as error:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
+                status_code=400,
                 detail=f"Unable to read CSV file. {error}"
             )
 
@@ -131,26 +103,14 @@ def upload_csv(
             "rows_inserted": len(employee_objects)
         }
 
-    except HTTPException:
-        raise
-
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(error)
         )
 
-@router.get(
-    "/data",
-    response_model=PaginatedEmployees
-)
-def get_all_employees(
-    page: int = 1,
-    per_page: int = 10,
-    department: str | None = None,
-    status_filter: str | None = None,
-    db: Session = Depends(get_db)
-):
+@router.get("/data", response_model=PaginatedEmployees)
+def get_all_employees(page: int = 1, per_page: int = 10, department: str | None = None,status_filter: str | None = None,db: Session = Depends(get_db)):
     """
     Return paginated employee records.
 
@@ -175,11 +135,7 @@ def get_all_employees(
 
         total_records = query.count()
 
-        employees = (
-            query.offset((page - 1) * per_page)
-            .limit(per_page)
-            .all()
-        )
+        employees = (query.offset((page - 1) * per_page).limit(per_page).all())
 
         return PaginatedEmployees(
             page=page,
@@ -195,14 +151,8 @@ def get_all_employees(
         )
 
 
-@router.get(
-    "/data/{employee_id}",
-    response_model=EmployeeResponse
-)
-def get_employee(
-    employee_id: int,
-    db: Session = Depends(get_db)
-):
+@router.get("/data/{employee_id}", response_model=EmployeeResponse)
+def get_employee(employee_id: int, db: Session = Depends(get_db)):
     """
     Return one employee by ID.
     """
@@ -223,23 +173,14 @@ def get_employee(
 
         return employee
 
-    except HTTPException:
-        raise
-
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(error)
         )
 
-
-@router.get(
-    "/analytics/summary",
-    response_model=list[DepartmentSummary]
-)
-def department_summary(
-    db: Session = Depends(get_db)
-):
+@router.get("/analytics/summary", response_model=list[DepartmentSummary])
+def department_summary(db: Session = Depends(get_db)):
     """
     Return department-wise analytics.
     """
@@ -290,14 +231,8 @@ def department_summary(
         )
 
 
-@router.get(
-    "/analytics/trends",
-    response_model=list[HiringTrend]
-)
-def hiring_trends(
-    frequency: str = "M",
-    db: Session = Depends(get_db)
-):
+@router.get("/analytics/trends", response_model=list[HiringTrend])
+def hiring_trends(frequency: str = "M", db: Session = Depends(get_db)):
     """
     Return hiring trends.
 
@@ -353,13 +288,8 @@ def hiring_trends(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(error)
         )
-@router.get(
-    "/health",
-    response_model=HealthResponse
-)
-def health_check(
-    db: Session = Depends(get_db)
-):
+@router.get("/health", response_model=HealthResponse)
+def health_check(db: Session = Depends(get_db)):
     """
     Check PostgreSQL and Redis connectivity.
     """
