@@ -17,5 +17,27 @@ services:
         restart: unless-stopped
         ports:
             - "6379:6379"
+
+    fastapi:
+        build:
+            context: .
+            dockerfile: Dockerfile
+
+        container_name: fastapi_app
+        env_file:
+            - .env
+
+        ports:
+            - "8000:8000"
+
+        depends_on:
+            - postgres
+            - redis
+        volumes:
+            - .:/app
+        command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+        restart: unless-stopped
+    
 volumes:
     postgres_data:

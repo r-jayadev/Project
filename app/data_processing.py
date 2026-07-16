@@ -68,7 +68,7 @@ def calculate_department_summary(df: pd.DataFrame) -> list[dict]:
     """
     summary_df=(df.groupby('department').agg(
         employee_count=("id","count"),
-        average_slary=("salary","mean"),
+        average_salary=("salary","mean"),
         total_salary=("salary","sum")).reset_index())
     
     return summary_df.to_dict(orient="records")

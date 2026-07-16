@@ -4,7 +4,7 @@ Database models for the application
 Contains all tables in the Postgres DB
 """
 from app.database import Base
-from sqlalchemy import Column, Integer, String, Float, Date, DateTime
+from sqlalchemy import Column, Integer, String, Float, Date
 
 class Employee(Base):
     """
