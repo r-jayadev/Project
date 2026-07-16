@@ -30,7 +30,7 @@ class EmployeeResponse(BaseModel):
 
 class DepartmentSummary(BaseModel):
     """
-    Response schmema for Dept Summary analytics
+    Response shcema for Dept Summary analytics
     """
     department: str
     employee_count: int

@@ -21,7 +21,7 @@ DATABASE_URL=(
 #Create the SQLalchemy engine - manages communication with Postgres
 engine = create_engine(DATABASE_URL, echo=True)
 
-#Create s session factory - each api call will create its own session 
+#Create a session factory - each api call will create its own session 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 #Base class for all SQLAlchemy Models
@@ -37,10 +37,6 @@ def get_db():
 
     try:
         yield db
-    
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Database Connection Failed")
 
     finally:
         db.close()
-        
