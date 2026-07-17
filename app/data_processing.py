@@ -73,12 +73,12 @@ def calculate_department_summary(df: pd.DataFrame) -> list[dict]:
     
     return summary_df.to_dict(orient="records")
 
-def calculate_hiring_trends(df: pd.DataFrame, frequency: str = "M") -> list[dict]:
+def calculate_hiring_trends(df: pd.DataFrame, frequency: str = "ME") -> list[dict]:
     """
     Calculate Hiring trends
 
-    1. M -> Monthly
-    2. Q-> Quaterly
+    1. ME -> Monthly
+    2. QE-> Quaterly
     """
 
     trend_df=df.copy()
