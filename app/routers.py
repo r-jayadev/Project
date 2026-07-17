@@ -232,13 +232,13 @@ def department_summary(db: Session = Depends(get_db)):
 
 
 @router.get("/analytics/trends", response_model=list[HiringTrend])
-def hiring_trends(frequency: str = "M", db: Session = Depends(get_db)):
+def hiring_trends(frequency: str = "ME", db: Session = Depends(get_db)):
     """
     Return hiring trends.
 
     Frequency:
-    M -> Monthly
-    Q -> Quarterly
+    ME -> Monthly
+    QE -> Quarterly
     """
 
     try:
