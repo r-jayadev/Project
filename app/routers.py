@@ -14,7 +14,7 @@ import pandas as pd
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
 
 from sqlalchemy.orm import Session
-
+from sqlalchemy import text
 from app.database import get_db
 from app.models import Employee
 from app.schemas import EmployeeResponse, PaginatedEmployees, DepartmentSummary, HiringTrend, HealthResponse
@@ -140,7 +140,7 @@ def get_all_employees(page: int = 1, per_page: int = 10, department: str | None 
         return PaginatedEmployees(
             page=page,
             per_page=per_page,
-            total_record=total_records,
+            total_records=total_records,
             employees=employees
         )
 
@@ -299,7 +299,7 @@ def health_check(db: Session = Depends(get_db)):
         database_status = "Connected"
 
         try:
-            db.execute("SELECT 1")
+            db.execute(text("SELECT 1"))
 
         except Exception:
             database_status = "Disconnected"
