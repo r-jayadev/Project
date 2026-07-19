@@ -10,14 +10,17 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from fastapi import HTTPException
 
 #Connect to Postgres using config.py
-DATABASE_URL=(
-    f"postgresql://{settings.POSTGRES_USER}:"
-    f"{settings.POSTGRES_PASSWORD}@"
-    f"{settings.POSTGRES_HOST}:"
-    f"{settings.POSTGRES_PORT}/"
-    f"{settings.POSTGRES_DB}"
-)
-
+try:
+    DATABASE_URL=(
+        f"postgresql://{settings.POSTGRES_USER}:"
+        f"{settings.POSTGRES_PASSWORD}@"
+        f"{settings.POSTGRES_HOST}:"
+        f"{settings.POSTGRES_PORT}/"
+        f"{settings.POSTGRES_DB}"
+    )
+except Exception as e:
+    print(f'Databse connection Error: {f}')
+    
 #Create the SQLalchemy engine - manages communication with Postgres
 engine = create_engine(DATABASE_URL, echo=True)
 
