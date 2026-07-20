@@ -299,3 +299,4 @@ id,name,email,phone,department,salary,status,hire_date,city
 298,Michael Anderson,michael.anderson298@example.com,+917055619826,Sales,113911,inactive,2024-04-27,Kochi
 299,Amelia Anderson,amelia.anderson299@example.com,+916054126923,Sales,140223,active,2024-02-01,Mumbai
 300,John Brown,john.brown300@example.com,+917899395957,HR,116220,active,2022-08-21,Delhi
+301,Arjun Nair,arjun.nair301@example.com,+919876543210,Engineering,125400,active,2024-03-15,Thiruvananthapuram

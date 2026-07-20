@@ -65,8 +65,11 @@ def upload_csv(file: UploadFile = File(...), db: Session = Depends(get_db)):
         cleaned_df = clean_data(employee_df)
 
         employee_objects = []
+        existing_emps={emp.id for emp in db.query(Employee.id).all()}
 
         for _, row in cleaned_df.iterrows():
+            if row["id"] in existing_emps:
+                continue
 
             employee = Employee(
                 id=int(row["id"]),

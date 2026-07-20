@@ -11,21 +11,13 @@ class EmployeeResponse(BaseModel):
     id: int
 
     name: str = Field(min_length=3, max_length=100, description="Employee Name")
-
     email: EmailStr
-
     phone: str = Field(min_length=10, max_length=15, description="Phone Number")
-
     department: str = Field(min_length=2, max_length=100, description="Employee Department")
-
     salary: float = Field(gt=0, description="Employee Salary")
-
     status: str
-
     hire_date: date
-
     city: str = Field(min_length=2, max_length=100, description="Employee City")
-
     model_config = ConfigDict(from_attributes=True)
 
 class DepartmentSummary(BaseModel):
